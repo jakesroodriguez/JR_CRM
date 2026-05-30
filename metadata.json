@@ -1,0 +1,6 @@
+{
+  "name": "JR CRM",
+  "description": "CRM moderno estilo Liquid Glass para desarrolladores web locales en Urretxu y Zumarraga. Prospección, gestión de clientes y automatización.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
