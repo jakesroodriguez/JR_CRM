@@ -8,6 +8,9 @@ import Captacion from './components/Captacion';
 import MisClientes from './components/MisClientes';
 import Ajustes from './components/Ajustes';
 import GoogleLogin from './components/GoogleLogin';
+import SegundoCerebro from './components/SegundoCerebro';
+import RelaxZone from './components/RelaxZone';
+import { TRANSLATIONS } from './data/translations';
 
 interface GoogleUser {
   name: string;
@@ -77,6 +80,13 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('Dashboard');
+  const [language, setLanguage] = useState<'ES' | 'EU'>(() => {
+    const saved = localStorage.getItem('jr_crm_language');
+    return (saved === 'EU' || saved === 'ES') ? (saved as 'ES' | 'EU') : 'ES';
+  });
+  const [wallpaper, setWallpaper] = useState<string>(() => {
+    return localStorage.getItem('jr_relax_wallpaper') || '';
+  });
   const [isScanning, setIsScanning] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>('');
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -290,6 +300,10 @@ export default function App() {
     localStorage.setItem('jr_crm_settings', JSON.stringify(settings));
   }, [settings]);
 
+  useEffect(() => {
+    localStorage.setItem('jr_crm_language', language);
+  }, [language]);
+
   // Expand and contract notifications inside the Dynamic Island
   const triggerStatusMessage = (message: string) => {
     setStatusMessage(message);
@@ -358,14 +372,23 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen pb-24 relative selection:bg-[#1B365D]/20 selection:text-[#1B365D]">
+    <div 
+      className="min-h-screen pb-24 relative selection:bg-[#1B365D]/20 selection:text-[#1B365D] bg-[#F8FAFC] transition-all duration-1000 bg-cover bg-fixed bg-center"
+      style={wallpaper ? { backgroundImage: `url(${wallpaper})` } : {}}
+    >
+      {/* Ambient background blur card layer if custom wallpaper is enabled */}
+      {wallpaper && (
+        <div className="absolute inset-0 bg-[#F8FAFC]/82 backdrop-blur-xs z-0 pointer-events-none transition-all duration-1000" />
+      )}
       
-      {/* 1. Dynamic Island Star Component with full Spotify callbacks */}
+      {/* 1. Dynamic Island Component with full Spotify callbacks and translation context */}
       <DynamicIsland
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         statusMessage={statusMessage}
         isProcessing={isScanning}
+        language={language}
+        setLanguage={setLanguage}
         
         isPlaying={isPlaying}
         activeTrack={activeTrack}
@@ -516,6 +539,22 @@ export default function App() {
                 }}
               />
             )}
+
+            {activeTab === 'Cerebro' && (
+              <SegundoCerebro
+                language={language}
+                triggerStatusMessage={triggerStatusMessage}
+              />
+            )}
+
+            {activeTab === 'Relax' && (
+              <RelaxZone
+                language={language}
+                wallpaper={wallpaper}
+                setWallpaper={setWallpaper}
+                triggerStatusMessage={triggerStatusMessage}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -650,19 +689,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 3. Sleek Footer Signature */}
-      <footer className="absolute bottom-6 left-0 right-0 text-center pointer-events-none z-10">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-200 bg-white/45 backdrop-blur-md shadow-xs pointer-events-auto">
-          <span className="text-[11px] font-bold text-[#1B365D] tracking-wider uppercase flex items-center gap-1.5">
-            <span className="inline-block w-1.5 h-1.5 bg-[#1B365D] rounded-full animate-pulse" />
-            JR CRM Professional Suite
-          </span>
-          <span className="text-slate-300">|</span>
-          <span className="text-[10px] font-semibold text-slate-500 flex items-center gap-1">
-            Diseñado con <Heart className="h-3 w-3 text-red-500 fill-current" /> para el Urola Garaia
-          </span>
-        </div>
-      </footer>
+      {/* Footer removed to avoid distractions as requested */}
 
     </div>
   );

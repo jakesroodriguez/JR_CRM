@@ -19,6 +19,7 @@ export default function MisClientes({
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeStateFilter, setActiveStateFilter] = useState<ProjectState | 'Todos'>('Todos');
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
 
   // Form states
   const [comercio, setComercio] = useState('');
@@ -210,15 +211,13 @@ END:VCALENDAR`;
     triggerStatusMessage(`Archivo Calendar ICS generado. ¡Importado con 1-click!`);
   };
 
-  // Borrar de local
+  // Borrar de local (sin diálogos confirm() del navegador que fallan en iframe)
   const handleDeleteProject = (projectId: string) => {
-    if (confirm('¿Seguro que deseas eliminar este proyecto del CRM?')) {
-      const p = projects.find((x) => x.id === projectId);
-      setProjects(projects.filter((x) => x.id !== projectId));
-      if (p) {
-        triggerStatusMessage(`Proyecto "${p.comercio}" borrado`);
-        sendToGoogleAppsScript('delete_project', { id: projectId });
-      }
+    const p = projects.find((x) => x.id === projectId);
+    setProjects(projects.filter((x) => x.id !== projectId));
+    if (p) {
+      triggerStatusMessage(`Proyecto "${p.comercio}" borrado con éxito`);
+      sendToGoogleAppsScript('delete_project', { id: projectId });
     }
   };
 
@@ -364,13 +363,36 @@ END:VCALENDAR`;
 
                 {/* Acciones */}
                 <div className="flex items-center justify-between gap-2 mt-4 pt-3">
-                  <button
-                    onClick={() => handleDeleteProject(project.id)}
-                    className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                    title="Registrar baja/borrar"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                  {deleteConfirmId === project.id ? (
+                    <div className="flex items-center gap-1.5 bg-red-50 p-1 rounded-xl border border-red-200">
+                      <span className="text-[9px] font-extrabold uppercase text-red-600 select-none px-1">¿Eliminar?</span>
+                      <button
+                        onClick={() => {
+                          handleDeleteProject(project.id);
+                          setDeleteConfirmId(null);
+                        }}
+                        className="px-2.5 py-1 bg-red-600 text-white rounded-lg text-[9px] font-black uppercase tracking-wider hover:bg-red-700 transition-all cursor-pointer"
+                        title="Confirmar"
+                      >
+                        Sí
+                      </button>
+                      <button
+                        onClick={() => setDeleteConfirmId(null)}
+                        className="px-2.5 py-1 bg-slate-200 text-slate-700 rounded-lg text-[9px] font-bold uppercase hover:bg-slate-300 transition-all cursor-pointer"
+                        title="Cancelar"
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setDeleteConfirmId(project.id)}
+                      className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                      title="Registrar baja/borrar"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  )}
 
                   <div className="flex-1 flex justify-end gap-2">
                     {/* Generar Mail Manual */}

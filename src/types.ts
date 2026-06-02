@@ -50,4 +50,4 @@ export interface SpotifyTrack {
   duration: number; // in seconds
 }
 
-export type ActiveTab = 'Dashboard' | 'Captacion' | 'Clientes' | 'Ajustes';
+export type ActiveTab = 'Dashboard' | 'Captacion' | 'Clientes' | 'Ajustes' | 'Cerebro' | 'Relax';

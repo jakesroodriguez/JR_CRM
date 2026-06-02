@@ -14,7 +14,10 @@ import {
   Volume2, 
   Search, 
   X, 
-  Disc 
+  Disc,
+  Brain,
+  Compass,
+  Globe
 } from 'lucide-react';
 import { ActiveTab, SpotifyTrack } from '../types';
 
@@ -23,6 +26,8 @@ interface DynamicIslandProps {
   setActiveTab: (tab: ActiveTab) => void;
   statusMessage?: string;
   isProcessing?: boolean;
+  language: 'ES' | 'EU';
+  setLanguage: (lang: 'ES' | 'EU') => void;
   
   // Spotify integration props
   isPlaying: boolean;
@@ -44,6 +49,8 @@ export default function DynamicIsland({
   setActiveTab,
   statusMessage,
   isProcessing = false,
+  language,
+  setLanguage,
   isPlaying,
   activeTrack,
   onTogglePlay,
@@ -61,6 +68,8 @@ export default function DynamicIsland({
   const [isMusicExpanded, setIsMusicExpanded] = useState(false);
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SpotifyTrack[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   // Auto-listen to keyboard 'toggle-spotify' triggers
   useEffect(() => {
@@ -71,10 +80,54 @@ export default function DynamicIsland({
     return () => window.removeEventListener('toggle-spotify', handleToggleSpotifyEvent);
   }, []);
 
+  // Real-time debounce fetch querying the live iTunes Search API
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const query = encodeURIComponent(searchQuery.trim());
+        const response = await fetch(`https://itunes.apple.com/search?term=${query}&media=music&limit=25`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.results) {
+            const mapped: SpotifyTrack[] = data.results
+              .map((item: any, idx: number) => ({
+                id: `itunes-${item.trackId || idx}-${Date.now()}`,
+                title: item.trackName || 'Canción Desconocida',
+                artist: item.artistName || 'Artista Desconocido',
+                album: item.collectionName || 'Álbum',
+                coverUrl: item.artworkUrl100 
+                  ? item.artworkUrl100.replace('100x100', '300x300') 
+                  : 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=150&h=150&q=80',
+                audioUrl: item.previewUrl || '',
+                duration: item.trackTimeMillis ? Math.floor(item.trackTimeMillis / 1000) : 30
+              }))
+              .filter((t: any) => t.audioUrl !== ''); // only tracks with playable sound preview url
+            setSearchResults(mapped);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching live iTunes search music:", err);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
+
   const getActiveState = () => {
     if (isMusicExpanded) return 'music';
     if (isProcessing) return 'processing';
     if (statusMessage) return 'notifying';
+    if (!isNavExpanded) return 'collapsed';
     return isHovered ? 'hovered' : 'idle';
   };
 
@@ -93,8 +146,16 @@ export default function DynamicIsland({
 
   // Dynamic Island Variants for motion
   const islandVariants = {
+    collapsed: {
+      width: '120px',
+      height: '38px',
+      borderRadius: '19px',
+      backgroundColor: '#090D16', // Slate-950/Black OLED
+      boxShadow: '0 8px 16px -4px rgba(27, 54, 93, 0.45)',
+      transition: { type: 'spring', stiffness: 350, damping: 25 }
+    },
     idle: {
-      width: '350px',
+      width: '630px', // Comfortably fit all 6 tabs + language toggle
       height: '48px',
       borderRadius: '24px',
       backgroundColor: '#1E293B', // Slate-800
@@ -102,7 +163,7 @@ export default function DynamicIsland({
       transition: { type: 'spring', stiffness: 350, damping: 25 }
     },
     hovered: {
-      width: '440px',
+      width: '740px',
       height: '54px',
       borderRadius: '27px',
       backgroundColor: '#0F172A', // Slate-900
@@ -110,7 +171,7 @@ export default function DynamicIsland({
       transition: { type: 'spring', stiffness: 350, damping: 25 }
     },
     processing: {
-      width: '460px',
+      width: '540px',
       height: '76px',
       borderRadius: '28px',
       backgroundColor: '#1E1B4B', // Indigo-950
@@ -136,10 +197,12 @@ export default function DynamicIsland({
   };
 
   const tabs = [
-    { id: 'Dashboard' as ActiveTab, label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'Captacion' as ActiveTab, label: 'Captación', icon: Radar },
-    { id: 'Clientes' as ActiveTab, label: 'Clientes', icon: Users },
-    { id: 'Ajustes' as ActiveTab, label: 'Ajustes', icon: Settings }
+    { id: 'Dashboard' as ActiveTab, label: language === 'EU' ? 'Arbela' : 'Dashboard', icon: LayoutDashboard },
+    { id: 'Captacion' as ActiveTab, label: language === 'EU' ? 'Bilketa' : 'Captación', icon: Radar },
+    { id: 'Clientes' as ActiveTab, label: language === 'EU' ? 'Bezeroak' : 'Clientes', icon: Users },
+    { id: 'Cerebro' as ActiveTab, label: language === 'EU' ? 'Garuna' : 'Cerebro', icon: Brain },
+    { id: 'Relax' as ActiveTab, label: language === 'EU' ? 'Atseden' : 'Relax', icon: Compass },
+    { id: 'Ajustes' as ActiveTab, label: language === 'EU' ? 'Ezarpenak' : 'Ajustes', icon: Settings }
   ];
 
   return (
@@ -301,55 +364,67 @@ export default function DynamicIsland({
 
                   {/* Track scrolling element */}
                   <div className="flex-1 overflow-y-auto pr-1 space-y-1 select-none flex-shrink-0" id="spotify-track-scroller">
-                    {filteredTracks.map((track) => {
-                      const isCurrent = track.id === activeTrack.id;
-                      return (
-                        <div
-                          key={track.id}
-                          onClick={() => {
-                            onSelectTrack(track);
-                            setIsSearchMode(false);
-                          }}
-                          className={`p-2 rounded-xl flex items-center justify-between text-left cursor-pointer transition-all ${
-                            isCurrent 
-                              ? 'bg-[#1DB954]/20 border border-[#1DB954]/20 text-white' 
-                              : 'hover:bg-white/5 border border-transparent text-slate-300'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <img 
-                              src={track.coverUrl} 
-                              alt={track.title} 
-                              className="w-8 h-8 rounded-lg object-cover" 
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="truncate text-xs">
-                              <p className={`font-bold truncate ${isCurrent ? 'text-[#1DB954]' : 'text-slate-100'}`}>
-                                {track.title}
-                              </p>
-                              <p className="text-slate-400 text-[10px] truncate">{track.artist}</p>
-                            </div>
-                          </div>
-                          
-                          {isCurrent && isPlaying && (
-                            <div className="flex items-center gap-[2px] h-3 pr-2">
-                              {[1, 2, 3].map((bar) => (
-                                <motion.div 
-                                  key={bar}
-                                  className="w-[2px] bg-[#1DB954] rounded-full"
-                                  animate={{ height: [4, 10, 4] }}
-                                  transition={{ duration: 0.5 + bar * 0.1, repeat: Infinity }}
-                                />
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                    {filteredTracks.length === 0 && (
-                      <div className="text-center text-xs text-slate-500 py-6">
-                        No se encontraron canciones.
+                    {isSearching ? (
+                      <div className="text-center text-xs text-slate-400 py-8 flex flex-col items-center justify-center gap-2">
+                        <div className="w-5 h-5 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+                        <span className="font-extrabold tracking-tight">
+                          {language === 'EU' ? 'Abestiak bilatzen...' : 'Buscando canciones reales...'}
+                        </span>
                       </div>
+                    ) : (
+                      <>
+                        {(searchQuery.trim() !== '' ? searchResults : trackList).map((track) => {
+                          const isCurrent = track.id === activeTrack.id;
+                          return (
+                            <div
+                              key={track.id}
+                              onClick={() => {
+                                onSelectTrack(track);
+                                setIsSearchMode(false);
+                              }}
+                              className={`p-2 rounded-xl flex items-center justify-between text-left cursor-pointer transition-all ${
+                                isCurrent 
+                                  ? 'bg-[#1DB954]/20 border border-[#1DB954]/20 text-white' 
+                                  : 'hover:bg-white/5 border border-transparent text-slate-300'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2.5 min-w-0">
+                                <img 
+                                  src={track.coverUrl} 
+                                  alt={track.title} 
+                                  className="w-8 h-8 rounded-lg object-cover" 
+                                  referrerPolicy="no-referrer"
+                                />
+                                <div className="truncate text-xs">
+                                  <p className={`font-bold truncate ${isCurrent ? 'text-[#1DB954]' : 'text-slate-100'}`}>
+                                    {track.title}
+                                  </p>
+                                  <p className="text-slate-400 text-[10px] truncate">{track.artist}</p>
+                                </div>
+                              </div>
+                              
+                              {isCurrent && isPlaying && (
+                                <div className="flex items-center gap-[2px] h-3 pr-2">
+                                  {[1, 2, 3].map((bar) => (
+                                    <motion.div 
+                                      key={bar}
+                                      className="w-[2px] bg-[#1DB954] rounded-full"
+                                      animate={{ height: [4, 10, 4] }}
+                                      transition={{ duration: 0.5 + bar * 0.1, repeat: Infinity }}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+
+                        {(searchQuery.trim() !== '' ? searchResults : trackList).length === 0 && (
+                          <div className="text-center text-xs text-slate-500 py-6">
+                            {language === 'EU' ? 'Gizarterik ez da aurkitu.' : 'No se encontraron canciones reales.'}
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -391,6 +466,24 @@ export default function DynamicIsland({
               <p className="text-xs md:text-sm font-semibold text-white/95 flex-1 text-left truncate">{statusMessage}</p>
               <span className="text-[9px] bg-white/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider font-extrabold shrink-0">Listo</span>
             </motion.div>
+          ) : !isNavExpanded ? (
+            /* ========================================================= */
+            /* TOTALLY COMPRESSED PILL STATE                              */
+            /* ========================================================= */
+            <motion.button
+              key="collapsed-state"
+              type="button"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              onClick={() => setIsNavExpanded(true)}
+              className="w-full h-full flex items-center justify-center gap-1.5 px-3 relative cursor-pointer select-none group"
+            >
+              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-black text-white tracking-widest uppercase font-mono group-hover:text-sky-300 transition-colors">
+                JRGRCM
+              </span>
+            </motion.button>
           ) : (
             /* ========================================================= */
             /* IDLE NAVIGATION BAR MODE (with miniature active wave support) */
@@ -404,6 +497,16 @@ export default function DynamicIsland({
             >
               {/* Miniature wave indicator & button on the right if song is playing */}
               <div className="flex items-center justify-between w-full h-full">
+                {/* Logo Home button to collapse the island back to pill */}
+                <button
+                  type="button"
+                  onClick={() => setIsNavExpanded(false)}
+                  className="flex items-center justify-center h-7 px-2.5 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-black text-sky-450 hover:text-sky-350 tracking-wider uppercase cursor-pointer select-none transition-all mr-1 shrink-0 border border-white/5"
+                  title="Comprimir Isla"
+                >
+                  JRGRCM
+                </button>
+
                 {tabs.map((tab) => {
                   const IconComponent = tab.icon;
                   const isActive = activeTab === tab.id;
@@ -447,6 +550,21 @@ export default function DynamicIsland({
                     </button>
                   );
                 })}
+
+                {/* Language translation quick switcher (Castellano <-> Vasco) */}
+                <button
+                  id="btn-language-toggle"
+                  type="button"
+                  onClick={() => {
+                    const nextLang = language === 'ES' ? 'EU' : 'ES';
+                    setLanguage(nextLang);
+                  }}
+                  className="flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/20 text-sky-400 hover:text-sky-300 transition-all cursor-pointer text-[10px] font-black tracking-wider uppercase z-10"
+                  title="Aldatu hizkuntza / Cambiar idioma"
+                >
+                  <Globe className="w-3.5 h-3.5" />
+                  <span>{language}</span>
+                </button>
 
                 {/* Spotify quick hub bubble icon widget inside simple layout */}
                 <div className="h-8 border-l border-white/10 mx-1"></div>
