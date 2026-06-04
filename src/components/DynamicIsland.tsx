@@ -154,7 +154,7 @@ export default function DynamicIsland({
             >
               <div className="absolute right-3.5 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-sky-500 animate-pulse" />
               <span className="text-xs font-black text-white tracking-widest uppercase font-mono group-hover:text-sky-300 transition-colors">
-                JR CRM
+                JRG CRM
               </span>
             </motion.button>
           ) : (
@@ -177,7 +177,7 @@ export default function DynamicIsland({
                   className="flex items-center justify-center h-7 px-2.5 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-black text-sky-450 hover:text-sky-350 tracking-wider uppercase cursor-pointer select-none transition-all mr-1 shrink-0 border border-white/5"
                   title="Comprimir Isla"
                 >
-                  JR CRM
+                  JRG CRM
                 </button>
 
                 {tabs.map((tab) => {

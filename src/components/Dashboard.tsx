@@ -76,7 +76,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
     >
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-[#1B365D] tracking-tight">JR CRM</h1>
+          <h1 className="text-3xl font-extrabold text-[#1B365D] tracking-tight">JRG CRM</h1>
           <p className="text-[#2C3E50]/70 font-medium mt-1">Escalando comercios locales en Urretxu y Zumarraga con webs de alto nivel.</p>
         </div>
         <div className="flex gap-2 bg-[#E1E8ED]/30 backdrop-blur-md p-1.5 rounded-2xl border border-white/50">

@@ -21,8 +21,8 @@ export default function GoogleLogin({ onLoginSuccess }: GoogleLoginProps) {
   };
 
   const alternativeUser = {
-    name: 'Invitado JR',
-    email: 'info@jrcrm.eus',
+    name: 'Invitado JRG',
+    email: 'info@jrgcrm.eus',
     photoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&h=150&q=80'
   };
 
@@ -92,7 +92,7 @@ export default function GoogleLogin({ onLoginSuccess }: GoogleLoginProps) {
               <div className="flex items-center justify-center gap-2.5 mb-2">
                 <div className="w-3.5 h-3.5 bg-[#1B365D] rounded-full animate-bounce"></div>
                 <h1 className="text-3xl font-extrabold tracking-tight text-[#2C3E50] font-sans">
-                  JR <span className="text-[#1B365D]">CRM</span>
+                  JRG <span className="text-[#1B365D]">CRM</span>
                 </h1>
               </div>
               <p className="text-xs font-semibold text-slate-500 mb-8 max-w-xs mx-auto">
@@ -139,7 +139,7 @@ export default function GoogleLogin({ onLoginSuccess }: GoogleLoginProps) {
                 Selecciona una cuenta
               </h3>
               <p className="text-xs font-medium text-slate-400 text-center mb-6">
-                para continuar en <span className="font-bold text-[#1B365D]">JR CRM</span>
+                para continuar en <span className="font-bold text-[#1B365D]">JRG CRM</span>
               </p>
 
               <div className="space-y-3 mb-6">

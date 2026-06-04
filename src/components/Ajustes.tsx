@@ -96,11 +96,11 @@ export default function Ajustes({
 
   // Apps Script blueprint code
   const appsScriptCode = `/**
- * GOOGLE APPS SCRIPT - CONECTOR CENTRAL "JR CRM"
+ * GOOGLE APPS SCRIPT - CONECTOR CENTRAL "JRG CRM"
  * 
  * Instrucciones:
  * 1. Entra a https://script.google.com con tu cuenta de Google.
- * 2. Crea un proyecto nuevo llamado "JR CRM Connector".
+ * 2. Crea un proyecto nuevo llamado "JRG CRM Connector".
  * 3. Reemplaza el código existente con este código.
  */
 
@@ -128,7 +128,7 @@ function doPost(e) {
 }
 
 function appendProjectToSheet(project) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.create("JR CRM Base Central");
+  var ss = SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.create("JRG CRM Base Central");
   var sheet = ss.getSheets()[0];
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(["ID", "Nombre Comercio", "Sector", "Dominio Comprado", "Ubicación", "Fecha Entrega", "Precio Venta", "Estado Actual", "Fecha Creación"]);
@@ -164,7 +164,7 @@ function scheduleCalendarEvent(eventData) {
     var title = "ENTREGA WEB: " + eventData.comercio;
     var targetDate = new Date(eventData.fechaEntrega);
     calendar.createAllDayEvent(title, targetDate, {
-      description: "Hito programado automáticamente desde JR CRM. Dominio: " + eventData.dominioComprado
+      description: "Hito programado automáticamente desde JRG CRM. Dominio: " + eventData.dominioComprado
     });
   }
 }`;
@@ -329,7 +329,7 @@ function scheduleCalendarEvent(eventData) {
                     Macro de Conexión Google
                   </h3>
                   <p className="text-xs text-[#2C3E50]/70 font-semibold leading-relaxed">
-                    JR CRM incluye soporte universal para Google Apps Script. Copia esta macro para vincular tu cuenta:
+                    JRG CRM incluye soporte universal para Google Apps Script. Copia esta macro para vincular tu cuenta:
                   </p>
 
                   <div className="relative mt-4">
@@ -369,7 +369,7 @@ function scheduleCalendarEvent(eventData) {
 
                   <div className="flex gap-2.5 items-center bg-cyan-100/50 p-4 border border-cyan-200/60 rounded-xl text-[10px] leading-relaxed text-cyan-800 font-semibold">
                     <Database className="h-5 w-5 text-cyan-600 shrink-0" />
-                    <span>Esta macro creará automáticamente la hoja Excel "JR CRM Base Central" y sincronizará agendas sin necesidad de bases de datos de terceros.</span>
+                    <span>Esta macro creará automáticamente la hoja Excel "JRG CRM Base Central" y sincronizará agendas sin necesidad de bases de datos de terceros.</span>
                   </div>
                 </div>
               </div>

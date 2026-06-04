@@ -189,9 +189,9 @@ export default function MisClientes({
     const icsContent = 
 `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//JR CRM//Local Scheduler//ES
+PRODID:-//JRG CRM//Local Scheduler//ES
 BEGIN:VEVENT
-UID:uid-${project.id}@jrcrm.local
+UID:uid-${project.id}@jrgcrm.local
 DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z
 DTSTART;VALUE=DATE:${dateFormatted}
 DTEND;VALUE=DATE:${dateFormatted}

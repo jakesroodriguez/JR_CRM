@@ -64,7 +64,7 @@ export default function Captacion({
 
   // Plantilla de mensaje de contacto rápido
   const getOutreachMessage = (lead: Lead) => {
-    return `Kaixo, ${lead.name}!\n\nMe llamo Jon y soy desarrollador web aquí en Urretxu. He visto vuestra ficha de Google Maps y me he dado cuenta de que no tenéis vuestra página web activa.\n\nHoy en día, más del 80% de los vecinos de Urretxu y Zumarraga buscan vuestro sector en el móvil antes de salir de casa o para pedir por teléfono. Estoy ayudando a comercios locales a digitalizarse con diseños ultra-rápidos que multiplican clientes.\n\n¿Te vendría bien una llamada de 5 minutos el lunes para que te enseñe una propuesta visual gratuita de cómo se vería ${lead.name} en internet?\n\nUn saludo, Jon (JR Web Development)`;
+    return `Kaixo, ${lead.name}!\n\nMe llamo Jon y soy desarrollador web aquí en Urretxu. He visto vuestra ficha de Google Maps y me he dado cuenta de que no tenéis vuestra página web activa.\n\nHoy en día, más del 80% de los vecinos de Urretxu y Zumarraga buscan vuestro sector en el móvil antes de salir de casa o para pedir por teléfono. Estoy ayudando a comercios locales a digitalizarse con diseños ultra-rápidos que multiplican clientes.\n\n¿Te vendría bien una llamada de 5 minutos el lunes para que te enseñe una propuesta visual gratuita de cómo se vería ${lead.name} en internet?\n\nUn saludo, Jon (JRG Web Development)`;
   };
 
   const handleCopyOutreach = (text: string) => {

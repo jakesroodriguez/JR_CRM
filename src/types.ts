@@ -1,5 +1,5 @@
 /**
- * Types definition for JR CRM
+ * Types definition for JRG CRM
  */
 
 export type SectorType = 'Hostelería' | 'Comercio' | 'Servicios';
