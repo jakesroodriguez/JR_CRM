@@ -60,7 +60,7 @@ export const TRANSLATIONS = {
     cerebroTitle: 'Mi Segundo Cerebro',
     cerebroDesc: 'Planificador de rutinas, notas inteligentes y novedades de IA.',
     rutinas: 'Rutinas Diarias',
-    rutinasDesc: 'Tacha tus hábitos diarios para mantener tus rachas saludables.',
+    rutinasDesc: 'Tacha tus hábitos diarios para mantener tu constancia de forma relajada.',
     agregarRutina: 'Añadir rutina diaria (Ej: Leer 15 mins)',
     agregar: 'Añadir',
     racha: 'Racha',

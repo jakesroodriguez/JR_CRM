@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Activity, Star, Calendar, RefreshCcw, Heart, Globe, User, ShieldCheck, Key, LogOut, X, Camera } from 'lucide-react';
+import { Activity, Star, Calendar, RefreshCcw, Heart, Globe, User, ShieldCheck, Key, LogOut, X, Camera, Sun, Moon } from 'lucide-react';
 import { Project, ActiveTab, AppSettings, Lead, SpotifyTrack } from './types';
 import DynamicIsland from './components/DynamicIsland';
 import Dashboard from './components/Dashboard';
@@ -80,6 +80,9 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('Dashboard');
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    return (localStorage.getItem('jr_crm_theme') as 'light' | 'dark') || 'light';
+  });
   const [language, setLanguage] = useState<'ES' | 'EU'>(() => {
     const saved = localStorage.getItem('jr_crm_language');
     return (saved === 'EU' || saved === 'ES') ? (saved as 'ES' | 'EU') : 'ES';
@@ -304,6 +307,10 @@ export default function App() {
     localStorage.setItem('jr_crm_language', language);
   }, [language]);
 
+  useEffect(() => {
+    localStorage.setItem('jr_crm_theme', theme);
+  }, [theme]);
+
   // Expand and contract notifications inside the Dynamic Island
   const triggerStatusMessage = (message: string) => {
     setStatusMessage(message);
@@ -373,15 +380,56 @@ export default function App() {
 
   return (
     <div 
-      className="min-h-screen pb-24 relative selection:bg-[#1B365D]/20 selection:text-[#1B365D] bg-[#F8FAFC] transition-all duration-1000 bg-cover bg-fixed bg-center"
+      className={`min-h-screen pb-24 relative selection:bg-[#1B365D]/20 selection:text-[#1B365D] bg-[#F8FAFC] transition-all duration-1000 bg-cover bg-fixed bg-center ${theme === 'dark' ? 'dark-mode-root' : ''}`}
       style={wallpaper ? { backgroundImage: `url(${wallpaper})` } : {}}
     >
       {/* Ambient background blur card layer if custom wallpaper is enabled */}
       {wallpaper && (
         <div className="absolute inset-0 bg-[#F8FAFC]/82 backdrop-blur-xs z-0 pointer-events-none transition-all duration-1000" />
       )}
+
+      {/* Premium Vertical Theme/Mode Capsule Floating on Center Left */}
+      <div className="fixed left-5 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center bg-white/70 dark:bg-slate-900/80 border border-slate-200/50 dark:border-white/10 p-2 rounded-2xl shadow-xl backdrop-blur-md">
+        <button
+          id="theme-toggle-dark"
+          type="button"
+          onClick={() => {
+            setTheme('dark');
+            triggerStatusMessage(
+              language === 'EU' ? 'Gairik ilunena ezarrita' : 'Tema cambiado: Modo Oscuro'
+            );
+          }}
+          className={`p-2 rounded-xl transition-all cursor-pointer ${
+            theme === 'dark' 
+              ? 'bg-[#1B365D] text-amber-300 shadow-md' 
+              : 'text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 dark:hover:bg-white/5'
+          }`}
+          title={language === 'EU' ? 'Modu iluna' : 'Modo oscuro'}
+        >
+          <Moon className="w-4.5 h-4.5" />
+        </button>
+        <div className="w-5 h-[1px] bg-slate-200/50 dark:bg-white/10 my-1" />
+        <button
+          id="theme-toggle-light"
+          type="button"
+          onClick={() => {
+            setTheme('light');
+            triggerStatusMessage(
+              language === 'EU' ? 'Argi modua ezarrita' : 'Tema cambiado: Modo Claro'
+            );
+          }}
+          className={`p-2 rounded-xl transition-all cursor-pointer ${
+            theme === 'light' 
+              ? 'bg-[#1B365D] text-white shadow-md' 
+              : 'text-slate-400 hover:text-[#1B365D] hover:bg-slate-100 dark:hover:bg-white/5'
+          }`}
+          title={language === 'EU' ? 'Argi modua' : 'Modo claro'}
+        >
+          <Sun className="w-4.5 h-4.5 text-amber-500" />
+        </button>
+      </div>
       
-      {/* 1. Dynamic Island Component with full Spotify callbacks and translation context */}
+      {/* 1. Dynamic Island Component with translation context */}
       <DynamicIsland
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -389,19 +437,6 @@ export default function App() {
         isProcessing={isScanning}
         language={language}
         setLanguage={setLanguage}
-        
-        isPlaying={isPlaying}
-        activeTrack={activeTrack}
-        onTogglePlay={handleTogglePlay}
-        onNextTrack={handleNextTrack}
-        onPrevTrack={handlePrevTrack}
-        currentTime={currentTime}
-        duration={duration}
-        seekTrack={handleSeek}
-        volume={volume}
-        onVolumeChange={handleVolumeChange}
-        trackList={SPOTIFY_TRACKS}
-        onSelectTrack={handleSelectTrack}
       />
 
       {/* Google User Avatar Profile Floating Hub (Top Right Corner) */}

@@ -96,7 +96,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
         {/* Metrica 1 */}
         <motion.div
           variants={itemVariants}
-          className="liquid-glass p-6 rounded-[24px] relative overflow-hidden group hover:shadow-lg transition-all duration-300"
+          className="liquid-glass p-6 rounded-xl relative overflow-hidden group hover:shadow-lg transition-all duration-300 border border-slate-200/50"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-115 transition-transform">
             <DollarSign className="h-16 w-16 text-[#1B365D]" />
@@ -105,7 +105,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
           <p className="text-3xl font-extrabold text-[#1B365D] mt-2">
             {ingresosTotales.toLocaleString('es-ES')} €
           </p>
-          <div className="flex items-center gap-1 text-emerald-600 font-semibold text-xs mt-3 bg-emerald-100/40 w-fit px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-1 text-emerald-600 font-semibold text-xs mt-3 bg-emerald-100/40 w-fit px-2 py-0.5 rounded-lg">
             <TrendingUp className="h-3.5 w-3.5" />
             <span>0% este mes</span>
           </div>
@@ -114,7 +114,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
         {/* Metrica 2 */}
         <motion.div
           variants={itemVariants}
-          className="liquid-glass p-6 rounded-[24px] relative overflow-hidden group hover:shadow-lg transition-all duration-300"
+          className="liquid-glass p-6 rounded-xl relative overflow-hidden group hover:shadow-lg transition-all duration-300 border border-slate-200/50"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-115 transition-transform">
             <Award className="h-16 w-16 text-cyan-500" />
@@ -123,7 +123,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
           <p className="text-3xl font-extrabold text-[#1B365D] mt-2">
             {proyectosEntregados} <span className="text-sm font-medium text-slate-400">/ {totalProyectos}</span>
           </p>
-          <div className="flex items-center gap-1 text-cyan-600 font-semibold text-xs mt-3 bg-cyan-100/40 w-fit px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-1 text-cyan-600 font-semibold text-xs mt-3 bg-cyan-100/40 w-fit px-2 py-0.5 rounded-lg">
             <ShieldCheck className="h-3.5 w-3.5" />
             <span>Postpack premium</span>
           </div>
@@ -132,7 +132,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
         {/* Metrica 3 */}
         <motion.div
           variants={itemVariants}
-          className="liquid-glass p-6 rounded-[24px] relative overflow-hidden group hover:shadow-lg transition-all duration-300"
+          className="liquid-glass p-6 rounded-xl relative overflow-hidden group hover:shadow-lg transition-all duration-300 border border-slate-200/50"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-115 transition-transform">
             <Clock className="h-16 w-16 text-indigo-500" />
@@ -141,7 +141,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
           <p className="text-3xl font-extrabold text-[#1B365D] mt-2">
             {promedioDiasDesarrollo} <span className="text-lg font-bold">días</span>
           </p>
-          <div className="flex items-center gap-1 text-[#1B365D] font-semibold text-xs mt-3 bg-[#1B365D]/10 w-fit px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-1 text-[#1B365D] font-semibold text-xs mt-3 bg-[#1B365D]/10 w-fit px-2 py-0.5 rounded-lg">
             <Zap className="h-3.5 w-3.5 text-[#1B365D]" />
             <span>0 días con automatización</span>
           </div>
@@ -150,7 +150,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
         {/* Metrica 4 */}
         <motion.div
           variants={itemVariants}
-          className="liquid-glass p-6 rounded-[24px] relative overflow-hidden group hover:shadow-lg transition-all duration-300"
+          className="liquid-glass p-6 rounded-xl relative overflow-hidden group hover:shadow-lg transition-all duration-300 border border-slate-200/50"
         >
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-115 transition-transform">
             <ArrowUpRight className="h-16 w-16 text-slate-600" />
@@ -159,7 +159,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
           <p className="text-3xl font-extrabold text-[#1B365D] mt-2">
             {tasaConversionUrretxu}
           </p>
-          <div className="flex items-center gap-1 text-purple-600 font-semibold text-xs mt-3 bg-purple-100/40 w-fit px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-1 text-purple-600 font-semibold text-xs mt-3 bg-purple-100/40 w-fit px-2 py-0.5 rounded-lg">
             <span>Mercado local óptimo</span>
           </div>
         </motion.div>
@@ -172,7 +172,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
         {/* Gráfico de barras de ingresos */}
         <motion.div
           variants={itemVariants}
-          className="liquid-glass p-6 rounded-[24px] lg:col-span-2 flex flex-col h-[380px]"
+          className="liquid-glass p-6 rounded-xl lg:col-span-2 flex flex-col h-[380px] border border-slate-200/50"
         >
           <div className="flex items-center justify-between mb-2">
             <div>
@@ -180,7 +180,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
               <p className="text-xs font-semibold text-slate-500 tracking-wide mt-0.5">Volumen total producido por proyectos cerrados (Ene - Jun)</p>
             </div>
             <div className="text-right">
-              <span className="text-xs text-white bg-[#1B365D] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-lg">
+              <span className="text-xs text-white bg-[#1B365D] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-md">
                 RECHART ENGINE
               </span>
             </div>
@@ -212,11 +212,11 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
                   unit=" €"
                 />
                 <Tooltip 
-                  cursor={{ fill: 'rgba(27, 54, 93, 0.05)', radius: 10 }}
+                  cursor={{ fill: 'rgba(27, 54, 93, 0.05)', radius: 4 }}
                   contentStyle={{
                     backgroundColor: 'rgba(255, 255, 255, 0.9)',
                     border: '1px solid rgba(27, 54, 93, 0.1)',
-                    borderRadius: '16px',
+                    borderRadius: '8px',
                     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.05)'
                   }}
                   itemStyle={{ color: '#1B365D', fontWeight: 600 }}
@@ -226,7 +226,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
                 <Bar 
                   dataKey="ingresos" 
                   fill="url(#barGradient)" 
-                  radius={[10, 10, 0, 0]} 
+                  radius={[3, 3, 0, 0]} 
                   maxBarSize={45}
                 />
               </BarChart>
@@ -237,7 +237,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
         {/* Gráfico de Sectores / Tarta */}
         <motion.div
           variants={itemVariants}
-          className="liquid-glass p-6 rounded-[24px] flex flex-col h-[380px]"
+          className="liquid-glass p-6 rounded-xl flex flex-col h-[380px] border border-slate-200/50"
         >
           <div>
             <h3 className="text-lg font-bold text-[#1B365D]">Distribución por Sector</h3>
@@ -264,7 +264,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
                   contentStyle={{
                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
                     border: '1px solid rgba(27, 54, 93, 0.1)',
-                    borderRadius: '12px'
+                    borderRadius: '8px'
                   }}
                 />
               </PieChart>
@@ -297,7 +297,7 @@ export default function Dashboard({ projects = [] }: DashboardProps) {
       {/* Tarjeta de Acceso Seguro / Atajo rápido */}
       <motion.div
         variants={itemVariants}
-        className="liquid-glass p-5 rounded-[24px] flex flex-col md:flex-row items-center justify-between gap-4 border-l-4 border-l-[#1B365D]"
+        className="liquid-glass p-5 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4 border-l-4 border-l-[#1B365D] border border-slate-200/50"
       >
         <div className="flex items-center gap-4">
           <div className="p-3 bg-[#1B365D]/10 rounded-2xl text-[#1B365D]">

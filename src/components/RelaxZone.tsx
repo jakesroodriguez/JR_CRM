@@ -437,44 +437,40 @@ export default function RelaxZone({ language, wallpaper, setWallpaper, triggerSt
               </button>
             </div>
 
-            {/* Vintage style Flip digits matrix */}
-            <div className="flex items-center justify-center gap-2 sm:gap-4 py-8 select-none">
+            {/* Elegant Modern Flat Clock digits matrix */}
+            <div className="flex items-center justify-center gap-2 sm:gap-3 py-10 select-none">
               
               {/* Hours Block */}
-              <div className="flex gap-1 sm:gap-2">
+              <div className="flex gap-1.5">
                 {hoursStr.split('').map((char, index) => (
-                  <div key={`h-${index}`} className="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black w-14 sm:w-20 h-20 sm:h-28 rounded-2xl border border-slate-800 shadow-2xl flex items-center justify-center overflow-hidden">
-                    {/* Upper/Lower half separating line */}
-                    <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-black/60 z-10" />
-                    <span className="text-4xl sm:text-6xl font-black text-[#F8FAFC] tracking-tight font-sans">
+                  <div key={`h-${index}`} className="w-14 sm:w-18 h-20 sm:h-24 rounded-xl bg-slate-900/5 dark:bg-white/5 border border-slate-200/40 dark:border-white/10 flex items-center justify-center shadow-xs">
+                    <span className="text-4xl sm:text-5xl font-extrabold text-[#1B365D] dark:text-sky-300 font-sans tracking-tight">
                       {char}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <span className="text-4xl sm:text-5xl font-black text-[#1B365D] animate-pulse">:</span>
+              <span className="text-3xl sm:text-4xl font-extrabold text-[#1B365D]/40 dark:text-sky-450/40 animate-pulse">:</span>
 
               {/* Minutes Block */}
-              <div className="flex gap-1 sm:gap-2">
+              <div className="flex gap-1.5">
                 {minutesStr.split('').map((char, index) => (
-                  <div key={`m-${index}`} className="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black w-14 sm:w-20 h-20 sm:h-28 rounded-2xl border border-slate-800 shadow-2xl flex items-center justify-center overflow-hidden">
-                    <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-black/60 z-10" />
-                    <span className="text-4xl sm:text-6xl font-black text-[#F8FAFC] tracking-tight font-sans">
+                  <div key={`m-${index}`} className="w-14 sm:w-18 h-20 sm:h-24 rounded-xl bg-slate-900/5 dark:bg-white/5 border border-slate-200/40 dark:border-white/10 flex items-center justify-center shadow-xs">
+                    <span className="text-4xl sm:text-5xl font-extrabold text-[#1B365D] dark:text-sky-300 font-sans tracking-tight">
                       {char}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <span className="text-4xl sm:text-5xl font-black text-[#1B365D] animate-pulse">:</span>
+              <span className="text-3xl sm:text-4xl font-extrabold text-[#1B365D]/40 dark:text-sky-450/40 animate-pulse">:</span>
 
               {/* Seconds Block */}
-              <div className="flex gap-1 sm:gap-2">
+              <div className="flex gap-1.5">
                 {secondsStr.split('').map((char, index) => (
-                  <div key={`s-${index}`} className="relative bg-gradient-to-b from-slate-900 to-black w-10 sm:w-14 h-14 sm:h-20 rounded-xl border border-slate-800 shadow-lg flex items-center justify-center overflow-hidden self-end">
-                    <div className="absolute left-0 right-0 top-1/2 h-[1px] bg-black/40 z-10" />
-                    <span className="text-2xl sm:text-3.5xl font-black text-indigo-400 font-sans">
+                  <div key={`s-${index}`} className="w-10 sm:w-14 h-16 sm:h-20 rounded-lg bg-indigo-500/10 dark:bg-indigo-400/10 border border-indigo-200/20 dark:border-indigo-400/15 flex items-center justify-center shadow-xs self-end">
+                    <span className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400 font-sans">
                       {char}
                     </span>
                   </div>
@@ -524,25 +520,23 @@ export default function RelaxZone({ language, wallpaper, setWallpaper, triggerSt
               <div className="flex-1 flex flex-col justify-center items-center py-6">
                 <div className="flex items-center justify-center gap-3 sm:gap-6 md:gap-8 select-none">
                   {/* Hours */}
-                  <div className="flex gap-2 sm:gap-3 md:gap-4">
+                  <div className="flex gap-2 sm:gap-3">
                     {hoursStr.split('').map((char, index) => (
-                      <div key={`fs-h-${index}`} className="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black w-20 sm:w-36 md:w-44 lg:w-48 h-28 sm:h-48 md:h-56 lg:h-64 rounded-3xl border border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
-                        <div className="absolute left-0 right-0 top-1/2 h-[1.5px] bg-black/60 z-10" />
-                        <span className="text-5xl sm:text-8xl md:text-9xl font-black text-white leading-none font-sans drop-shadow-lg">
+                      <div key={`fs-h-${index}`} className="bg-slate-900/60 w-20 sm:w-32 md:w-36 h-28 sm:h-44 md:h-48 rounded-2xl border border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
+                        <span className="text-5xl sm:text-7xl md:text-8xl font-black text-white leading-none font-sans drop-shadow-lg">
                           {char}
                         </span>
                       </div>
                     ))}
                   </div>
 
-                  <span className="text-4xl sm:text-7xl md:text-8xl font-black text-sky-400 animate-pulse pb-4">:</span>
+                  <span className="text-4xl sm:text-7xl md:text-8xl font-black text-sky-450 animate-pulse pb-4">:</span>
 
                   {/* Minutes */}
-                  <div className="flex gap-2 sm:gap-3 md:gap-4">
+                  <div className="flex gap-2 sm:gap-3">
                     {minutesStr.split('').map((char, index) => (
-                      <div key={`fs-m-${index}`} className="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black w-20 sm:w-36 md:w-44 lg:w-48 h-28 sm:h-48 md:h-56 lg:h-64 rounded-3xl border border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
-                        <div className="absolute left-0 right-0 top-1/2 h-[1.5px] bg-black/60 z-10" />
-                        <span className="text-5xl sm:text-8xl md:text-9xl font-black text-white leading-none font-sans drop-shadow-lg">
+                      <div key={`fs-m-${index}`} className="bg-slate-900/60 w-20 sm:w-32 md:w-36 h-28 sm:h-44 md:h-48 rounded-2xl border border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
+                        <span className="text-5xl sm:text-7xl md:text-8xl font-black text-white leading-none font-sans drop-shadow-lg">
                           {char}
                         </span>
                       </div>
@@ -552,11 +546,10 @@ export default function RelaxZone({ language, wallpaper, setWallpaper, triggerSt
                   <span className="text-2xl sm:text-5xl md:text-6xl font-black text-indigo-400 animate-pulse pb-4 inline-block">:</span>
 
                   {/* Seconds */}
-                  <div className="flex gap-1 sm:gap-2 self-end mb-4">
+                  <div className="flex gap-1.5 self-end mb-4">
                     {secondsStr.split('').map((char, index) => (
-                      <div key={`fs-s-${index}`} className="relative bg-gradient-to-b from-slate-900 via-slate-950 to-black w-10 sm:w-20 md:w-24 h-14 sm:h-28 md:h-32 rounded-2xl border border-white/5 shadow-2xl flex items-center justify-center overflow-hidden">
-                        <div className="absolute left-0 right-0 top-1/2 h-[1.5px] bg-black/60 z-10" />
-                        <span className="text-2xl sm:text-5xl md:text-6xl font-extrabold text-sky-300 font-sans">
+                      <div key={`fs-s-${index}`} className="bg-indigo-950/60 w-11 sm:w-16 md:w-20 h-16 sm:h-24 md:h-28 rounded-xl border border-indigo-400/20 shadow-2xl flex items-center justify-center overflow-hidden">
+                        <span className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-sky-300 font-sans">
                           {char}
                         </span>
                       </div>

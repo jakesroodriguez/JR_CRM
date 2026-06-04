@@ -20,6 +20,57 @@ import {
 import { TRANSLATIONS, MOTIVATIONAL_PHRASES, AI_NEWS } from '../data/translations';
 import MindMapBuilder from './MindMapBuilder';
 
+const CURATED_SYNONYMS: { [word: string]: { es: string[]; eu: string[] } } = {
+  digitalizar: {
+    es: ['automatizar', 'digitalizar', 'modernizar', 'virtualizar', 'sistematizar', 'tecnologizar'],
+    eu: ['digitalizatu', 'automatizatu', 'modernizatu', 'birtualizatu', 'eguneratu']
+  },
+  vender: {
+    es: ['comercializar', 'facturar', 'rentabilizar', 'colocar', 'distribuir', 'expender'],
+    eu: ['saldu', 'merkaturatu', 'fakturatu', 'ustiatu', 'banatu']
+  },
+  crear: {
+    es: ['diseñar', 'desarrollar', 'producir', 'fundar', 'estructurar', 'idear', 'confeccionar'],
+    eu: ['sortu', 'diseinatu', 'garatu', 'eraiki', 'egituratu', 'asmatu']
+  },
+  proyecto: {
+    es: ['iniciativa', 'plan', 'propuesta', 'emprendimiento', 'desarrollo', 'esquema', 'diseño'],
+    eu: ['proiektua', 'ekimena', 'plana', 'egitasmoa', 'erronka']
+  },
+  servicio: {
+    es: ['prestación', 'asistencia', 'cobertura', 'soporte', 'contribución', 'utilidad', 'labor'],
+    eu: ['zerbitzua', 'laguntza', 'estaldura', 'babesa', 'onura']
+  },
+  cliente: {
+    es: ['comprador', 'consumidor', 'adquiriente', 'patrocinador', 'usuario', 'destinatario'],
+    eu: ['bezeroa', 'eroslea', 'kontsumitzailea', 'erabiltzailea']
+  },
+  diseño: {
+    es: ['maquetación', 'interfaz', 'arquitectura', 'estética', 'estructura', 'bosquejo', 'trazo'],
+    eu: ['diseinua', 'makizazioa', 'itxura', 'estetika', 'egitura', 'zirriborroa']
+  },
+  contacto: {
+    es: ['lead', 'oportunidad', 'prospecto', 'vinculación', 'enlace', 'conexión', 'afiliado'],
+    eu: ['kontaktua', 'lotura', 'harremana', 'aukera', 'kidea']
+  },
+  entrega: {
+    es: ['lanzamiento', 'despliegue', 'suministro', 'remisión', 'concesión', 'finalización'],
+    eu: ['entrega', 'aurkezpena', 'hedapena', 'hornidura', 'bukaera']
+  },
+  rápido: {
+    es: ['ágil', 'veloz', 'eficiente', 'fluido', 'expedito', 'inmediato', 'dinámico'],
+    eu: ['azkarra', 'bizkorra', 'arina', 'arina', 'efizientea', 'jarraitua']
+  },
+  bonito: {
+    es: ['estético', 'armonioso', 'atractivo', 'elegante', 'pulido', 'sofisticado', 'visual'],
+    eu: ['polita', 'estetikoa', 'erakargarria', 'dotorea', 'lanztatua']
+  },
+  ayudar: {
+    es: ['potenciar', 'colaborar', 'digitalizar', 'impulsar', 'facilitar', 'asistir'],
+    eu: ['lagundu', 'bultzatu', 'indartu', 'erraztu', 'babestu']
+  }
+};
+
 interface Routine {
   id: string;
   name: string;
@@ -93,6 +144,9 @@ export default function SegundoCerebro({ language, triggerStatusMessage }: Segun
 
   // --- STATE FOR ACTIVE MOTIVATION ---
   const [motivationIndex, setMotivationIndex] = useState(0);
+
+  // --- STATE FOR SYNONYMS SEARCH ---
+  const [synonymSearch, setSynonymSearch] = useState('');
 
   // --- PERSISTENCE ---
   useEffect(() => {
@@ -341,6 +395,119 @@ export default function SegundoCerebro({ language, triggerStatusMessage }: Segun
                   <p className="text-xs font-bold text-slate-400">Introduce una rutina para empezar.</p>
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* DICCIONARIO CREATIVO DE SINÓNIMOS */}
+          <div className="glass-card p-6 md:p-8 text-left space-y-4 shadow-sm border border-[#1B365D]/10">
+            <div>
+              <h2 className="text-lg font-extrabold text-[#1B365D] tracking-tight flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-indigo-500" />
+                {language === 'EU' ? 'Sinonimo Hiztegi Bizia' : 'Diccionario de Sinónimos'}
+              </h2>
+              <p className="text-xs text-slate-500 font-semibold mt-0.5">
+                {language === 'EU' ? 'Hitz gakoen sinonimoak bilatu eta kopiatu testuak aberasteko' : 'Busca y copia alternativas rápidas para mejorar tu copywriting'}
+              </p>
+            </div>
+
+            {/* Synonym selector / Search field */}
+            <div className="space-y-3">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={synonymSearch}
+                  onChange={(e) => setSynonymSearch(e.target.value)}
+                  placeholder={language === 'EU' ? 'Idatzi hitz bat (Adib: digitalizar, crear)...' : 'Buscar sinónimos (Ej: digitalizar, crear, rápido)...'}
+                  className="w-full text-xs p-3 rounded-xl bg-slate-50 border border-slate-200 outline-none text-[#2C3E50] focus:ring-2 focus:ring-[#1B365D]/15 focus:bg-white transition-all"
+                />
+              </div>
+
+              {/* Dynamic curated suggestions button list */}
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {Object.keys(CURATED_SYNONYMS).slice(0, 6).map((word) => (
+                  <button
+                    key={word}
+                    type="button"
+                    onClick={() => setSynonymSearch(word)}
+                    className="px-2.5 py-1 bg-white hover:bg-slate-50 text-[10px] font-bold text-slate-600 rounded-lg border border-slate-200/80 transition-all cursor-pointer"
+                  >
+                    #{word}
+                  </button>
+                ))}
+              </div>
+
+              {/* Matching synonyms result */}
+              <div className="bg-white/50 p-4 rounded-xl border border-slate-200/40 space-y-3">
+                {(() => {
+                  const cleanedQuery = synonymSearch.trim().toLowerCase();
+                  if (!cleanedQuery) {
+                    return (
+                      <div className="text-center py-4 text-slate-400 text-xs">
+                        {language === 'EU' ? 'Hitz bat hautatu sinonimoak ikusteko.' : 'Introduce o selecciona una palabra clave para descubrir sinónimos.'}
+                      </div>
+                    );
+                  }
+
+                  // Look up word matching keys
+                  const matchKey = Object.keys(CURATED_SYNONYMS).find(
+                    key => key.includes(cleanedQuery) || cleanedQuery.includes(key)
+                  );
+
+                  if (matchKey) {
+                    const group = CURATED_SYNONYMS[matchKey];
+                    const activeList = language === 'EU' ? group.eu : group.es;
+                    return (
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center bg-indigo-500/5 px-2.5 py-1 rounded-md mb-2">
+                          <span className="text-xs font-extrabold text-[#1B365D] uppercase tracking-wide">
+                            {matchKey}
+                          </span>
+                          <span className="text-[9px] bg-indigo-600 text-white font-extrabold rounded-md px-1.5 py-0.5 uppercase tracking-widest leading-none">
+                            {activeList.length} {language === 'EU' ? 'Sinonimo' : 'Alternativas'}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          {activeList.map((syn) => (
+                            <button
+                              key={syn}
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard.writeText(syn);
+                                triggerStatusMessage(
+                                  language === 'EU' 
+                                    ? `Kopiatuta: "${syn}"` 
+                                    : `Copiado: "${syn}"`
+                                );
+                              }}
+                              className="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-[#2C3E50] border border-slate-200/80 hover:border-slate-350 rounded-lg text-left text-xs font-bold transition-all relative overflow-hidden group/item cursor-pointer flex items-center justify-between"
+                              title={language === 'EU' ? 'Sakatu kopiatzeko' : 'Haz clic para copiar'}
+                            >
+                              <span className="truncate pr-1">{syn}</span>
+                              <span className="text-[8px] uppercase tracking-widest text-[#1B365D]/60 font-black opacity-0 group-hover/item:opacity-100 transition-opacity">Copy</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div className="space-y-3 py-1">
+                        <div className="p-3 bg-amber-500/5 rounded-lg border border-amber-500/10 text-xs text-slate-550 flex gap-2 items-start text-left">
+                          <Lightbulb className="w-5 h-5 text-amber-500 shrink-0" />
+                          <div>
+                            <p className="font-bold text-slate-700">{language === 'EU' ? 'Hitz horrentzat ez dugu presetik' : 'Palabra no registrada'}</p>
+                            <p className="text-[10px] text-slate-500 mt-0.5">
+                              {language === 'EU' 
+                                ? 'Saiatu digitalizar, vender, crear, proyecto, servicio, rápido o bonito' 
+                                : 'Prueba buscando palabras como: digitalizar, vender, crear, proyecto, servicio, rápido o bonito.'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })()}
+              </div>
             </div>
           </div>
         </div>
