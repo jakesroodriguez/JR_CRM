@@ -779,7 +779,7 @@ export default function RelaxZone({ language, wallpaper, setWallpaper, triggerSt
                   <button
                     type="button"
                     onClick={(e) => handleDeleteCustomWallpaper(wall.id, e)}
-                    className="absolute top-2 left-2 bg-red-650 hover:bg-red-700 text-white p-1 rounded-lg shadow-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer z-20"
+                    className="absolute top-2 left-2 bg-red-600 hover:bg-red-700 text-white p-1 rounded-lg shadow-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer z-20"
                     title={language === 'EU' ? 'Ezabatu argazkia' : 'Eliminar foto'}
                   >
                     <Trash2 className="w-3 h-3" />

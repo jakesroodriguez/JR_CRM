@@ -429,13 +429,13 @@ export default function MindMapBuilder({ language, triggerStatusMessage }: MindM
   };
 
   const handleDeleteActiveMap = () => {
-    if (mindMaps.length <= 1) {
-      triggerStatusMessage(language === 'EU' ? 'Ezin da azken mapa ezabatu' : 'No puedes eliminar el único mapa restante');
-      return;
-    }
     const updated = mindMaps.filter(m => m.id !== activeMapId);
     setMindMaps(updated);
-    setActiveMapId(updated[0].id);
+    if (updated.length > 0) {
+      setActiveMapId(updated[0].id);
+    } else {
+      setActiveMapId('');
+    }
     triggerStatusMessage(language === 'EU' ? 'Mapa ezabatu da' : 'Mapa mental eliminado con éxito');
   };
 
@@ -464,14 +464,14 @@ export default function MindMapBuilder({ language, triggerStatusMessage }: MindM
   };
 
   const handleDeleteMapById = (mapId: string) => {
-    if (mindMaps.length <= 1) {
-      triggerStatusMessage(language === 'EU' ? 'Ezin da azken mapa ezabatu' : 'No puedes eliminar el único mapa restante');
-      return;
-    }
     const updated = mindMaps.filter(m => m.id !== mapId);
     setMindMaps(updated);
     if (activeMapId === mapId) {
-      setActiveMapId(updated[0].id);
+      if (updated.length > 0) {
+        setActiveMapId(updated[0].id);
+      } else {
+        setActiveMapId('');
+      }
     }
     triggerStatusMessage(language === 'EU' ? 'Mapa ezabatu da' : 'Mapa mental eliminado con éxito');
   };
@@ -1056,7 +1056,7 @@ export default function MindMapBuilder({ language, triggerStatusMessage }: MindM
               <button
                 onClick={handleDeleteActiveMap}
                 type="button"
-                className="p-2 border border-red-200 bg-red-50 hover:bg-red-105 dark:bg-red-950/20 text-red-650 rounded-xl transition-all cursor-pointer shrink-0"
+                className="p-2 border border-red-200 bg-red-50 hover:bg-red-100 dark:bg-red-950/20 text-red-600 rounded-xl transition-all cursor-pointer shrink-0"
                 title={t.deleteMap}
               >
                 <Trash2 className="w-4 h-4" />
@@ -1371,7 +1371,7 @@ export default function MindMapBuilder({ language, triggerStatusMessage }: MindM
 
                         <button
                           onClick={() => handleDeleteMapById(map.id)}
-                          className="p-1.5 border border-red-200/60 dark:border-red-955/40 bg-red-50/20 hover:bg-red-50 hover:text-red-650 dark:hover:bg-red-950/20 rounded-lg text-red-500 transition-all cursor-pointer"
+                          className="p-1.5 border border-red-200/60 dark:border-red-900/40 bg-red-50/20 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/20 rounded-lg text-red-500 transition-all cursor-pointer"
                           title={language === 'EU' ? 'Mapa ezabatu' : 'Eliminar Mapa'}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
